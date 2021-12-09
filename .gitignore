@@ -6,7 +6,7 @@ node_modules
 /api/.idea
 /api/Homestead.json
 /api/Homestead.yaml
-./api/env
+/api/.env
 /api/.phpunit.result.cache
 
 
