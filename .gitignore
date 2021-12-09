@@ -1,6 +1,13 @@
 .DS_Store
 node_modules
 /dist
+/android
+/api/vendor
+/api/.idea
+/api/Homestead.json
+/api/Homestead.yaml
+./api/env
+/api/.phpunit.result.cache
 
 
 # local env files

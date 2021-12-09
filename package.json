@@ -9,11 +9,14 @@
     "build-css": "npx tailwindcss -i ./tailwind.css -o ./src/assets/css/main.css"
   },
   "dependencies": {
+    "@capacitor/android": "^3.3.3",
     "@capacitor/core": "^3.3.2",
     "@fortawesome/fontawesome-free": "^5.15.4",
     "axios": "^0.24.0",
     "core-js": "^3.6.5",
+    "js-cookie": "^3.0.1",
     "localforage": "^1.10.0",
+    "sweetalert2": "^11.3.0",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
     "vuex": "^4.0.0-0"
