@@ -1,0 +1,6 @@
+{
+  "appId": "aut.bus.raul.ro",
+  "appName": "Autoliv MBus",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}
