@@ -20,3 +20,7 @@ $router->group(['middleware' => 'auth'], function () use ($router){
     $router->post('/createUser', ['uses' => "UsersController@createUser"]);
     $router->post('/loginUser', ['uses' => "UsersController@loginUser"]);
 });
+
+$router->group(['middleware' => 'auth', 'prefix' => 'admin'], function () use ($router){
+    $router->post('/login', ['uses' => "AdminUsersController@login"]);
+});

@@ -11,7 +11,7 @@ export default {
   methods: {
     setUrl(){
       if(process.env.NODE_ENV === "development"){
-        this.$store.dispatch('setUrl', "http://localhost:8000/");
+        this.$store.dispatch('setUrl', "http://localhost:8000/admin/");
       }
     },
   },

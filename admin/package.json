@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4",
+    "@headlessui/vue": "^1.4.2",
     "axios": "^0.24.0",
     "core-js": "^3.6.5",
     "js-cookie": "^3.0.1",
