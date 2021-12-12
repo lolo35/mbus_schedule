@@ -10,14 +10,17 @@
                         <i class="far fa-id-card text-green-500"></i>
                         ID Autoliv
                     </label>
-                    <input type="text" class="bg-white border-b appearance-none outline-none w-full px-3 py-1" placeholder="Ex: TRO07513" required v-model="autoliv_id">
+                    <input type="text" class="bg-white border-b appearance-none outline-none w-full px-3 py-1" :class="{'border-red-500': error}" placeholder="Ex: TRO07513" required v-model="autoliv_id">
                 </div>
                 <div class="flex flex-col w-full">
                     <label for="password" class="font-semibold">
                         <i class="fas fa-lock text-green-500"></i>
                         Parola
                     </label>
-                    <input type="password" class="bg-white border-b appearance-none outline-none w-full px-3 py-1" required v-model="password">
+                    <input type="password" class="bg-white border-b appearance-none outline-none w-full px-3 py-1" :class="{'border-red-500': error}" required v-model="password">
+                </div>
+                <div class="flex flex-row bg-red-100">
+                    <p class="font-bold text-red-500 px-3 py-1" v-if="error">Utilizator sau parola gresita</p>
                 </div>
                 <button type="submit" class="text-white px-3 py-1 w-full bg-green-500">
                     <i class="fas fa-sign-out-alt"></i>
@@ -47,6 +50,7 @@ export default {
         return {
             autoliv_id: "",
             password: "",
+            error: false,
         }
     },
     methods: {
@@ -65,7 +69,11 @@ export default {
                     this.autoliv_id = "";
                     this.password = "";
                     Cookies.set('login', true, {expires: 7, path: '/'});
+                    Cookies.set('division', response.data.division, {expires: 7, path: '/'});
+                    Cookies.set('user_id', response.data.id, {expires: 7, path: "/"});
                     this.$router.push('/');
+                }else{
+                    this.error = true;
                 }
             } catch (error){
                 if(process.env.NODE_ENV === "development"){

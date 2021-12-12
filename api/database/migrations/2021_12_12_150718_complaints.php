@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Users extends Migration
+class Complaints extends Migration
 {
     /**
      * Run the migrations.
@@ -14,11 +14,13 @@ class Users extends Migration
     public function up()
     {
         //
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('complaints', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('division');
-            $table->string('autoliv_id');
-            $table->string('password');
+            $table->integer('user_id');
+            $table->integer('route_id');
+            $table->string('title');
+            $table->text('complaint');
             $table->timestamps();
         });
     }
@@ -31,6 +33,6 @@ class Users extends Migration
     public function down()
     {
         //
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('complaints');
     }
 }

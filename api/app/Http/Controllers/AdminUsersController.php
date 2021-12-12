@@ -17,7 +17,8 @@ class AdminUsersController extends Controller {
             if(!$user->isEmpty()){
                 $password = hash('sha256', $request['password']);
                 if($password === $user[0]['password']){
-                    return response()->json(array('success' => true), 200);
+                    $data = ['user', $user[0]['username'], 'division' => $user[0]['division']];
+                    return response()->json(array('success' => true, 'data' => $data), 200);
                 }else{
                     return response()->json(array('success' => false, 'error' => 'login_failed'), 200);
                 }

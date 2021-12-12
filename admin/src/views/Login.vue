@@ -81,6 +81,7 @@ export default {
                 }
                 if(response.data.success){
                     Cookies.set('jwt', true, { expires: 1, path: '/'});
+                    Cookies.set('division', response.data.data['division'], {expires: 1, path: "/"});
                     this.$router.push('/');
                 }
             } catch (error){

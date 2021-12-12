@@ -16,7 +16,9 @@ class Routes extends Migration
         //
         Schema::create('routes', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('division');
             $table->string('route');
+            $table->text('description');
             $table->timestamps();
         });
     }

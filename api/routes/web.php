@@ -19,8 +19,19 @@ $router->group(['middleware' => 'auth'], function () use ($router){
     // });
     $router->post('/createUser', ['uses' => "UsersController@createUser"]);
     $router->post('/loginUser', ['uses' => "UsersController@loginUser"]);
+    //$router->get('/routesUser', ['uses' => "RoutesController@getRoutesForUser"]);
+    $router->get('/routes', ['uses' => "RoutesController@getRoutes"]);
+    $router->get('/stations', ['uses' => "StationsController@fetchStations"]);
+    $router->get('/stationSchedule', ['uses' => "StationsController@fetchStationSchedule"]);
+    $router->post('/complaint', ['uses' => "ComplaintsController@addComplaint"]);
 });
 
 $router->group(['middleware' => 'auth', 'prefix' => 'admin'], function () use ($router){
     $router->post('/login', ['uses' => "AdminUsersController@login"]);
+    $router->post('/addRoute', ['uses' => "RoutesController@addRoute"]);
+    $router->get('/routes', ['uses' => "RoutesController@getRoutes"]);
+    $router->post('/addStation', ['uses' => "StationsController@addStations"]);
+    $router->get('/stations', ['uses' => "StationsController@fetchStations"]);
+    $router->get('/stationSchedule', ['uses' => "StationsController@fetchStationSchedule"]);
+    $router->post('/stationSchedule', ['uses' => "StationsController@addStationSchedule"]);
 });

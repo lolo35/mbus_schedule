@@ -1,5 +1,5 @@
 import { createStore } from 'vuex';
-import Routes from './Routes';
+import routes from './Routes/index';
 
 export default createStore({
   state: {
@@ -18,6 +18,6 @@ export default createStore({
     }
   },
   modules: {
-    Routes,
+    routes,
   }
 })

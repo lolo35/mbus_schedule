@@ -38,6 +38,7 @@ export default {
         async logout(){
             try {
                 Cookies.remove('jwt', {path: '/'});
+                Cookies.remove('division', {path: '/'});
                 this.$router.push('/login');
             } catch (error) {
                 if(process.env.NODE_ENV === "development"){

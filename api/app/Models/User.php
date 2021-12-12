@@ -20,6 +20,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     protected $fillable = [
         'autoliv_id',
+        'division',
     ];
 
     /**

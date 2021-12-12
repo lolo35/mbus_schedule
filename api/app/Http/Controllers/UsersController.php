@@ -14,10 +14,12 @@ class UsersController extends Controller {
         try {
             $check = User::where('autoliv_id', '=', $request['autoliv_id'])->get();
             if($check->isEmpty()){
+                $division = substr($request['autoliv_id'], 0, 3);
                 $l2l_activeUser = $this->checkL2LUser($request['autoliv_id']);
                 if($l2l_activeUser){
                     $insert = new User();
                     $insert->autoliv_id = $request['autoliv_id'];
+                    $insert->division = $division;
                     $insert->password = hash('sha256', $request['password']);
                     if($insert->save()){
                         return response()->json(array('success' => true), 200);
@@ -45,13 +47,16 @@ class UsersController extends Controller {
             $user = User::where('autoliv_id', '=', $request['autoliv_id'])->get()->makeVisible(['password']);
             if(!$user->isEmpty()){
                 if($password === $user[0]['password']){
-                    return response()->json(array('success' => true), 200);
+                    $division = $user[0]['division'];
+                    return response()->json(array('success' => true, 'division' => $division, 'id' => $user[0]['id']), 200);
                 }else{
                     return response()->json(array('success' => false, 'error' => 'login_failed'), 200);
                 }
             }else{
                 return response()->json(array('success' => false, 'error' => 'no_user'), 200);
             }
+        }else{
+            return response()->json(array('success' => false, 'error' => 'no_user'), 200);
         }
     }
 
