@@ -4,10 +4,16 @@
   </div>
   <div class="flex flex-row w-full bg-white border px-3 py-3 fixed bottom-0 items-center justify-between" v-if="showNavBar">
     <router-link to="/favorites" title="Favorite">
-      <i class="fas fa-heart" :class="$route.name === 'favorites' ? 'text-blue-500' : 'text-gray-500'"></i>
+      <i class="fas fa-heart" :class="$route.name === 'Favorites' ? 'text-blue-500' : 'text-gray-500'"></i>
     </router-link>
     <router-link to="/" title="Rute">
       <i class="fas fa-home" :class="$route.name === 'Home' ? 'text-blue-500' : 'text-gray-500'"></i>
+    </router-link>
+    <router-link to="/transportPlan" title="Planificare transport">
+      <i class="fas fa-bus-alt" :class="$route.name === 'TransportPlan' ? 'text-blue-500': 'text-gray-500'"></i>
+    </router-link>
+    <router-link to="/transportRules">
+      <i class="fas fa-file-alt" :class="$route.name === 'TransportRules' ? 'text-blue-500': 'text-gray-500'"></i>
     </router-link>
     <router-link to="/feedback" title="Sugestii/Reclamatii">
       <i class="fas fa-comments" :class="$route.name === 'Feedback' ? 'text-blue-500': 'text-gray-500'"></i>

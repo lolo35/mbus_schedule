@@ -39,6 +39,7 @@ export default {
 	created(){
 		this.checkForDivision();
 		this.fetchRoutes();
+		localforage.setItem('favoriteRoutes', []);
 	},
 	methods: {
 		async fetchRoutes(){

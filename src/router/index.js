@@ -21,6 +21,21 @@ const routes = [
     path: '/feedback',
     name: "Feedback",
     component: () => import('../views/Feedback.vue'),
+  },
+  {
+    path: "/favorites",
+    name: "Favorites",
+    component: () => import('../views/Favorites.vue'),
+  },
+  {
+    path: "/transportPlan",
+    name: "TransportPlan",
+    component: () => import('../views/TransportPlan.vue'),
+  },
+  {
+    path: "/transportRules",
+    name: "TransportRules",
+    component: () => import('../views/TransportRules.vue'),
   }
 ]
 

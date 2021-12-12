@@ -1,10 +1,13 @@
 <template>
     <div class="flex flex-col bg-white shadow border px-3 py-1">
-        <div class="flex flex-row">
+        <div class="flex flex-row justify-between">
             <h5 class="text-md font-semibold">
                 <i class="fas fa-bus text-green-500"></i>
                 {{ routeData.route }}
             </h5>
+            <button class="text-blue-500" title="Adauga la favorite" @click="addToFavorites()">
+                <i class="far fa-heart"></i>
+            </button>
         </div>
         <div v-if="showStations">
             <Station v-for="station in stations" :key="station.id" :station="station" />
@@ -15,6 +18,7 @@
 <script>
 import Station from './Station.vue';
 import axios from 'axios';
+import localforage from 'localforage';
 
 export default {
     name: "Route",
@@ -51,6 +55,15 @@ export default {
                     console.error(error);
                 }
             }
+        },
+        async addToFavorites(){
+            let favorites = await localforage.getItem('favoriteRoutes');
+            let route = Object.assign({}, this.routeData);
+            favorites.push(route);
+            await localforage.setItem('favoriteRoutes', favorites);
+            // favorites.filter(element => {
+            //     console.log(element);
+            // });
         }
     }
 }
