@@ -1,7 +1,7 @@
 <template>
 	<div class="flex flex-col space-y-2 px-3">
 		<div class="flex flex-row px-3 py-1">
-			<h5 class="text-lg font-semibold text-gray-600">
+			<h5 class="text-lg font-semibold text-gray-700">
 				<i class="fas fa-search text-blue-500"></i>
 				Cautare rute
 			</h5>
@@ -39,9 +39,15 @@ export default {
 	created(){
 		this.checkForDivision();
 		this.fetchRoutes();
-		localforage.setItem('favoriteRoutes', []);
+		
 	},
 	methods: {
+		async setFavorites(){
+			const favorites = await localforage.getItem('favoriteRoutes');
+			if(!favorites){
+				await localforage.setItem('favoriteRoutes', []);
+			}
+		},
 		async fetchRoutes(){
 			const division = await localforage.getItem('division');
 			if(division){

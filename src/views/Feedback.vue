@@ -8,9 +8,11 @@
             <select id="feedback_type" class="bg-white px-3 py-1 border shadow outline-none" v-model="select">
                 <option value="">Alege</option>
                 <option value="1">Reclamatie</option>
+                <option value="2">Sugestie</option>
             </select>
         </div>
-        <complaints v-if="select === '1'"></complaints>
+        <complaints v-if="select === '1'" :type="'complaint'"></complaints>
+        <complaints v-if="select === '2'" :type="'sugestion'"></complaints>
     </div>
 </template>
 

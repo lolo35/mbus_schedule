@@ -13,6 +13,30 @@
                         Rute
                     </div>
                 </router-link>
+                <router-link to="/complaints">
+                    <div 
+                        class="bg-gray-900 p-2 rounded mt-2 cursor-pointer hover:bg-gray-700 hover:text-blue-500"
+                        :class="$route.name === 'Complaints' ? 'text-blue-300' : 'text-white'"    
+                    >
+                        Reclamatii
+                    </div>
+                </router-link>
+                <router-link to="/sugestions">
+                    <div
+                        class="bg-gray-900 p-2 rounded mt-2 cursor-pointer hover:bg-gray-700 hover:text-blue-500"
+                        :class="$route.name === 'Sugestions' ? 'text-blue-300': 'text-white'"
+                    >
+                        Sugestii
+                    </div>
+                </router-link>
+                <router-link to="/transportPlan">
+                    <div
+                        class="bg-gray-900 p-2 rounded mt-2 cursor-pointer hover:bg-gray-700 hover:text-blue-500"
+                        :class="$route.name === 'TransportPlan' ? 'text-blue-300': 'text-white'"
+                    >
+                        Planificare transport
+                    </div>
+                </router-link>
             </div>
             <button class="flex p-3 text-white bg-red-500 rounded cursor-pointer text-center text-sm" @click="logout()">
                 <div class="rounded inline-flex items-center">

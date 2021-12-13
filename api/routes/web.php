@@ -24,6 +24,7 @@ $router->group(['middleware' => 'auth'], function () use ($router){
     $router->get('/stations', ['uses' => "StationsController@fetchStations"]);
     $router->get('/stationSchedule', ['uses' => "StationsController@fetchStationSchedule"]);
     $router->post('/complaint', ['uses' => "ComplaintsController@addComplaint"]);
+    $router->post('/sugestion', ['uses' => "SugestionsController@addSugestion"]);
 });
 
 $router->group(['middleware' => 'auth', 'prefix' => 'admin'], function () use ($router){
@@ -34,4 +35,7 @@ $router->group(['middleware' => 'auth', 'prefix' => 'admin'], function () use ($
     $router->get('/stations', ['uses' => "StationsController@fetchStations"]);
     $router->get('/stationSchedule', ['uses' => "StationsController@fetchStationSchedule"]);
     $router->post('/stationSchedule', ['uses' => "StationsController@addStationSchedule"]);
+    $router->get('/complaints', ['uses' => "ComplaintsController@getComplaints"]);
+    $router->get('/sugestions', ['uses' => "SugestionsController@getSugestions"]);
+
 });

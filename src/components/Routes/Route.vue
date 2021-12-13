@@ -5,8 +5,12 @@
                 <i class="fas fa-bus text-green-500"></i>
                 {{ routeData.route }}
             </h5>
-            <button class="text-blue-500" title="Adauga la favorite" @click="addToFavorites()">
+            <button class="text-blue-500" v-if="!favorite" title="Adauga la favorite" @click="addToFavorites()">
                 <i class="far fa-heart"></i>
+            </button>
+
+            <button class="text-blue-500" v-if="favorite" title="Elimina de la favorite" @click="removeFromFavorites()">
+                <i class="fas fa-heart"></i>
             </button>
         </div>
         <div v-if="showStations">
@@ -26,6 +30,7 @@ export default {
         return {
             stations: [],
             showStations: false,
+            favorite: false,
         }
     },
     props: {
@@ -36,6 +41,7 @@ export default {
     },
     created(){
         this.fetchStations();
+        this.checkforFavorite();
     },
     methods: {
         async fetchStations(){
@@ -61,9 +67,36 @@ export default {
             let route = Object.assign({}, this.routeData);
             favorites.push(route);
             await localforage.setItem('favoriteRoutes', favorites);
+            this.favorite = true;
             // favorites.filter(element => {
             //     console.log(element);
             // });
+        },
+        async removeFromFavorites(){
+            const favorites = await localforage.getItem('favoriteRoutes');
+            if(favorites.length > 1){
+                let newFavorites;
+                for(let i = 0; i < favorites.length; i++){
+                    if(this.routeData.id === favorites[i].id){
+                        console.log(favorites[i].id);
+                        newFavorites = favorites.splice(i, 1);
+                        break;
+                    }
+                }
+                await localforage.setItem('favoriteRoutes', newFavorites);
+            }else{
+                await localforage.setItem('favoriteRoutes', []);
+            }
+            this.favorite = false;
+        },
+        async checkforFavorite(){
+            const favorites = await localforage.getItem('favoriteRoutes');
+            for(let i = 0; i < favorites.length; i++){
+                if(this.routeData.id === favorites[i].id){
+                    this.favorite = true;
+                    break;
+                }
+            }
         }
     }
 }

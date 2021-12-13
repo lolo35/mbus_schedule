@@ -12,7 +12,8 @@
             </select>
         </div>
         <div class="flex flex-col">
-            <label for="problem" class="block text-sm font-semibold text-gray-700">Reclamatie</label>
+            <label for="problem" class="block text-sm font-semibold text-gray-700" v-if="type === 'complaint'">Reclamatie</label>
+            <label for="problem" class="block text-sm font-semibold text-gray-700" v-if="type === 'sugestion'">Sugestie</label>
             <textarea id="problem" cols="10" rows="15" class="border appearance-none outline-none px-2 py-1 focus:border-blue-500" v-model="complaint"></textarea>
         </div>
         <div class="flex flex-row w-full">
@@ -39,6 +40,9 @@ export default {
             route_id: "",
         }
     },
+    props: {
+        type: String,
+    },
     created() {
         if(this.$store.state.routes.routes.length == 0){
             this.fetchRoutes();
@@ -52,11 +56,15 @@ export default {
             formData.append('api_token', this.$store.state.apiKey);
             formData.append('division', division);
             formData.append('user_id', Cookies.get('user_id', {path: '/'}));
-            formData.append('complaint', this.complaint);
+            if(this.type === "complaint"){
+                formData.append('complaint', this.complaint);
+            }else if(this.type === "sugestion"){
+                formData.append('sugestion', this.complaint);
+            }
             formData.append('title', this.subject);
             formData.append('route_id', this.route_id);
             try {
-                const response = await axios.post(`${this.$store.state.url}complaint`, formData, {headers: {"Content-type": "application/x-www-form-urlencoded"}});
+                const response = await axios.post(`${this.$store.state.url}${this.type}`, formData, {headers: {"Content-type": "application/x-www-form-urlencoded"}});
                 if(process.env.NODE_ENV === "development"){
                     console.log(response.data);
                 }
@@ -64,10 +72,17 @@ export default {
                     this.subject = "";
                     this.complaint = "";
                     this.route_id = "";
-                    Swal.fire({
-                        icon:'success',
-                        text: "Reclamatia ta a fost trimisa cu success",
-                    });
+                    if(this.type === "complaint"){
+                        Swal.fire({
+                            icon:'success',
+                            text: "Reclamatia ta a fost trimisa cu success",
+                        });
+                    }else if(this.type === "sugestion"){
+                        Swal.fire({
+                            icon:'success',
+                            text: "Sugestia ta a fost trimisa cu success",
+                        });
+                    }
                 }
             } catch (error){
                 if(process.env.NODE_ENV === "development") {

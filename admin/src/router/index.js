@@ -24,6 +24,20 @@ const routes = [
         components: { 
           home: () => import('../views/Routes.vue')
         }
+      },
+      {
+        name: "Complaints",
+        path: "/complaints",
+        components: {
+          home: () => import('../views/Complaints.vue')
+        }
+      },
+      {
+        name: "Sugestions",
+        path: "/sugestions",
+        components: {
+          home: () => import('../views/Sugestions.vue'),
+        }
       }
     ]
   },

@@ -1,5 +1,7 @@
 import { createStore } from 'vuex';
 import routes from './Routes/index';
+import complaints from './Complaints/index';
+import sugestions from './Sugestions/index';
 
 export default createStore({
   state: {
@@ -19,5 +21,7 @@ export default createStore({
   },
   modules: {
     routes,
+    complaints,
+    sugestions,
   }
 })
