@@ -14,8 +14,8 @@ class StationsController extends Controller {
         ]);
 
         try {
-            $check = Stations::where('station', '=', $request['station'])->get();
-            if($check->isEmpty()){
+            //$check = Stations::where('station', '=', $request['station'])->get();
+            //if($check->isEmpty()){
                 $insert = new Stations();
                 $insert->route_id = $request['route_id'];
                 $insert->station = $request['station'];
@@ -25,7 +25,7 @@ class StationsController extends Controller {
                 }else{
                     return response()->json(array('success' => false), 200);
                 }
-            }
+            //}
         } catch (Exception $e){
             return response()->json(array('success' => false, 'error' => $e), 200);
         }
@@ -76,6 +76,34 @@ class StationsController extends Controller {
                 ['retur' => $request['retur']]
             );
             return response()->json(array('success' => true), 200);
+        }
+    }
+
+    public function deleteStation(Request $request){
+        $this->validate($request, [
+            'station_id' => 'required'
+        ]);
+
+        try {
+            Stations::where('id', '=', $request['station_id'])->delete();
+            StationSchedule::where('station_id', '=', $request['station_id'])->delete();
+            return response()->json(array('success' => true), 200);
+        } catch (Exception $e){
+            return response()->json(array('success' => false, 'error' => $e), 200);
+        }
+    }
+
+    public function editStation(Request $request){
+        $this->validate($request, [
+            'station_id' => 'required',
+            'value' => 'required'
+        ]);
+
+        try {
+            Stations::where('id', '=', $request['station_id'])->update(['station' => $request['value']]);
+            return response()->json(array('success' => true), 200);
+        } catch (Exception $e){
+            return response()->json(array('success' => false, 'error' => $e), 200);
         }
     }
 }

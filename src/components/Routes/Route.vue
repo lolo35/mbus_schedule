@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col bg-white shadow border px-3 py-1">
+    <div class="flex flex-col bg-white shadow border px-3 py-1 mb-5">
         <div class="flex flex-row justify-between">
             <h5 class="text-md font-semibold">
                 <i class="fas fa-bus text-green-500"></i>

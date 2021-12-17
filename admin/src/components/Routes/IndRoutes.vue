@@ -1,16 +1,37 @@
 <template>
     <div class="flex flex-col mt-2">
         <div class="flex flex-row bg-gray-900 px-3 py-1 rounded-t items-center space-x-3">
-            <button class="rounded-full w-8 h-8 bg-red-500 hover:bg-red-700 text-white" title="Sterge ruta">
+            <button class="rounded-full w-8 h-8 bg-red-500 hover:bg-red-700 text-white" title="Sterge ruta" @click="deleteRoute()">
                 <i class="fas fa-trash-alt"></i>
             </button>
             <button class="text-blue-500 bg-gray-700 rounded-full w-8 h-8 hover:bg-gray-600" title="Adauga Statie" @click="dialogIsOpen = true">
                 <i class="fas fa-plus"></i>
             </button>
-            <h4 class="text-md font-bold text-gray-300">{{ route.route }} - {{ route.description }}</h4>
+            <button class="text-blue-500 bg-gray-700 rounded-full w-8 h-8 hover:bg-gray-600" title="Editeaza ruta" @click="showEdit = !showEdit">
+                <i class="fas fa-edit"></i>
+            </button>
+            <h4 class="text-md font-bold text-gray-300" v-if="!showEdit">{{ routeName }} - {{ routeDescription }}</h4>
+            <div v-if="showEdit" class="flex flex-row space-x-2">
+                <form class="flex flex-row" @submit="changeRouteName()">
+                    <input type="text" class="rounded-l px-3 py-1" v-model="routeName">
+                    <button type="submit" class="rounded-r px-3 py-1 text-white"
+                        :class="{'bg-blue-500 hover:bg-blue-700': !routeNameSaved, 'bg-green-500 hover:bg-green-700': routeNameSaved}"
+                    >
+                        <i class="far fa-save"></i>
+                    </button>
+                </form>
+                <form class="flex flex-row" @submit="changeRouteDescription()">
+                    <input type="text" class="rounded-l px-3 py-1" v-model="routeDescription">
+                    <button type="submit" class="rounded-r px-3 py-1 text-white"
+                        :class="{'bg-blue-500 hover:bg-blue-700': !routeDescriptionSaved, 'bg-green-500 hover:bg-green-700': routeDescriptionSaved}"
+                    >
+                        <i class="far fa-save"></i>
+                    </button>
+                </form>
+            </div>
         </div>
         <div v-if="showStations">
-            <Station v-for="station in stations" :key="station.id" :station="station"></Station>
+            <Station v-for="(station, index) in stations" :index="index" :key="station.id" :station="station" v-on:deleteStation="deleteStation"></Station>
         </div>
     </div>
     <Dialog 
@@ -37,7 +58,7 @@
                         <i class="far fa-comment-dots text-blue-500"></i>
                         Descriere
                     </label>
-                    <input type="text" id="station" class="border-b px-3 py-1 appearance-none outline-none focus:bg-gray-100" required v-model="description">
+                    <input type="text" id="station" class="border-b px-3 py-1 appearance-none outline-none focus:bg-gray-100" v-model="description">
                     <div class="flex flex-row w-full bg-green-100 px-3 py-1" v-if="success">
                         <p class="text-green-500 font-semibold">
                             Statie adaugat cu success
@@ -61,6 +82,7 @@ import {
 } from '@headlessui/vue';
 import axios from 'axios';
 import Station from './Station.vue';
+import Swal from 'sweetalert2';
 
 export default {
     name: "IndRoutes", //individual Routes,
@@ -72,10 +94,16 @@ export default {
             success: false,
             showStations: false,
             stations: [],
+            routeName: this.route.route,
+            routeDescription: this.route.description,
+            showEdit: false,
+            routeNameSaved: false,
+            routeDescriptionSaved: false,
         }
     },
     props: {
         route: Object,
+        index: Number,
     },
     components: {
         Dialog,
@@ -87,6 +115,78 @@ export default {
         this.fetchStations();
     },
     methods: {
+        deleteStation(payload){
+            console.log(payload);
+            this.stations.splice(payload, 1);
+        },
+        async deleteRoute(){
+            const swal = await Swal.fire({
+                icon: 'question',
+                text: `Esti sigur ca vrei sa stergi ruta ${this.route.route}?`,
+                showCancelButton: true,
+                cancelButtonText: "Nu",
+                cancelButtonColor: "red",
+                confirmButtonText: "Da",
+            });
+            if(swal.isConfirmed){
+                let formData = new FormData();
+                formData.append('api_token', this.$store.state.apiKey);
+                formData.append('route_id', this.route.id);
+                const response = await axios.post(`${this.$store.state.url}deleteRoute`, formData, {headers: {"Content-type": "application/x-www-form-urlencoded"}});
+                if(process.env.NODE_ENV === "development"){
+                    console.log(response.data);
+                }
+                if(response.data.success){
+                    this.$store.dispatch('routes/removeRoute', this.index);
+                }
+            }
+        },
+        async changeRouteDescription(){
+            event.preventDefault();
+            let formData = new FormData();
+            formData.append('api_token', this.$store.state.apiKey);
+            formData.append('route_id', this.route.id);
+            formData.append('description', this.routeDescription);
+            try {
+                const response = await axios.post(`${this.$store.state.url}editRouteDescription`, formData, {headers: {"Content-type": "application/x-www-form-urlencoded"}});
+                if(process.env.NODE_ENV === "development"){
+                    console.log(response.data);
+                }
+                if(response.data.success){
+                    this.routeDescriptionSaved = true;
+                    setTimeout(() => {
+                        this.routeDescriptionSaved = false;
+                    }, 5000);
+                }
+            } catch (error){
+                if(process.env.NODE_ENV === "development"){
+                    console.error(error);
+                }
+            }
+        },
+        async changeRouteName(){
+            event.preventDefault();
+            let formData = new FormData();
+            formData.append('api_token', this.$store.state.apiKey);
+            formData.append('route', this.routeName);
+            formData.append('route_id', this.route.id);
+            try {
+                const response = await axios.post(`${this.$store.state.url}editRouteName`, formData, {headers: {"Content-type": "application/x-www-form-urlencoded"}});
+                if(process.env.NODE_ENV === "development"){
+                    console.log(response.data);
+                }
+                if(response.data.success){
+                    this.routeNameSaved = true;
+                    setTimeout(() => {
+                        this.routeNameSaved = false;
+                    }, 5000);
+                }
+            } catch (error){
+                if(process.env.NODE_ENV === "development"){
+                    console.error(error);
+                }
+            }
+        },
         async fetchStations(){
             try {
                 let params = `?api_token=${this.$store.state.apiKey}&route_id=${this.route.id}`;
@@ -107,10 +207,16 @@ export default {
         async addStation(){
             event.preventDefault();
             let formData = new FormData();
+            let description = "";
+            if(this.description.length == 0){
+                description = "N/A";
+            }else{
+                description = this.description;
+            }
             formData.append('api_token', this.$store.state.apiKey);
             formData.append('route_id', this.route.id);
             formData.append('station', this.station);
-            formData.append('description', this.description);
+            formData.append('description', description);
 
             try {
                 const response = await axios.post(`${this.$store.state.url}addStation`, formData, {headers: {"Content-type": "application/x-www-form-urlencoded"}});

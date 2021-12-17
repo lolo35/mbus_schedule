@@ -46,7 +46,7 @@
             </div>
         </Dialog>
         <div id="routes" v-if="$store.state.routes.showRoutes">
-            <ind-routes v-for="route in routeData" :key="route.id" :route="route"></ind-routes>
+            <ind-routes v-for="(route, index) in routeData" :index="index" :key="route.id" :route="route"></ind-routes>
         </div>
     </section>
 </template>

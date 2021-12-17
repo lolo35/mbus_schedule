@@ -37,5 +37,9 @@ $router->group(['middleware' => 'auth', 'prefix' => 'admin'], function () use ($
     $router->post('/stationSchedule', ['uses' => "StationsController@addStationSchedule"]);
     $router->get('/complaints', ['uses' => "ComplaintsController@getComplaints"]);
     $router->get('/sugestions', ['uses' => "SugestionsController@getSugestions"]);
-
+    $router->post('/editRouteName', ['uses' => 'RoutesController@editRouteName']);
+    $router->post('/editRouteDescription', ['uses' => "RoutesController@editRouteDescription"]);
+    $router->post('/deleteRoute', ['uses' => "RoutesController@deleteRoute"]);
+    $router->post('/deleteStation', ['uses' => "StationsController@deleteStation"]);
+    $router->post('/editStation', ['uses' => "StationsController@editStation"]);
 });

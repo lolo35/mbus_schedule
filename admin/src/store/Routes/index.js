@@ -34,6 +34,9 @@ export default {
             if(state.page + 1 > 1){
                 state.page--;
             }
+        },
+        removeRoute(state, value){
+            state.routes.splice(value, 1);
         }
     },
     actions: {
@@ -54,6 +57,9 @@ export default {
         },
         incPageNumber({ commit }){
             commit('incPageNumber');
+        },
+        removeRoute({ commit }, value){
+            commit('removeRoute', value);
         }
     },
     getters: {

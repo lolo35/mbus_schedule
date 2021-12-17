@@ -55,4 +55,45 @@ class RoutesController extends Controller {
             return response()->json(array('success' => false, 'error' => $e), 200);
         }
     }
+
+    public function editRouteName(Request $request){
+        $this->validate($request, [
+            'route' => 'required',
+            'route_id' => 'required'
+        ]);
+
+        try {
+            Routes::where('id', '=', $request['route_id'])->update(['route' => $request['route']]);
+            return response()->json(array('success' => true), 200);
+        } catch (Exception $e){
+            return response()->json(array('success' => false, 'error' => $e), 200);
+        }
+    }
+
+    public function editRouteDescription(Request $request){
+        $this->validate($request, [
+            'description' => 'required',
+            'route_id' => 'required'
+        ]);
+
+        try {
+            Routes::where('id', '=', $request['route_id'])->update(['description' => $request['description']]);
+            return response()->json(array('success' => true), 200);
+        } catch (Exception $e){
+            return response()->json(array('success' => false, 'error' => $e), 200);
+        }
+    }
+
+    public function deleteRoute(Request $request){
+        $this->validate($request, [
+            'route_id' => 'required',
+        ]);
+
+        try {
+            Routes::where('id', '=', $request['route_id'])->delete();
+            return response()->json(array('success' => true), 200);
+        } catch (Exception $e){
+            return response()->json(array('success' => false, 'error' => $e), 200);
+        }
+    }
 }
