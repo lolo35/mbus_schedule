@@ -36,6 +36,11 @@ const routes = [
     path: "/transportRules",
     name: "TransportRules",
     component: () => import('../views/TransportRules.vue'),
+  },
+  {
+    path: "/contact",
+    name: "Contact",
+    component: () => import('../views/Contact.vue')
   }
 ]
 

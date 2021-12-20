@@ -25,6 +25,7 @@ $router->group(['middleware' => 'auth'], function () use ($router){
     $router->get('/stationSchedule', ['uses' => "StationsController@fetchStationSchedule"]);
     $router->post('/complaint', ['uses' => "ComplaintsController@addComplaint"]);
     $router->post('/sugestion', ['uses' => "SugestionsController@addSugestion"]);
+    $router->get('/contact', ['uses' => "ContactController@getContact"]);
 });
 
 $router->group(['middleware' => 'auth', 'prefix' => 'admin'], function () use ($router){

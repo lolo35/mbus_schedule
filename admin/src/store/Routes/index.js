@@ -58,6 +58,9 @@ export default {
         incPageNumber({ commit }){
             commit('incPageNumber');
         },
+        decPageNumber({ commit }){
+            commit('decPageNumber');
+        },
         removeRoute({ commit }, value){
             commit('removeRoute', value);
         }
@@ -71,7 +74,9 @@ export default {
                     return route.includes(search);
                 })
             }else{
-                return state.routes.slice(getters.sliceIndex, state.routesDisplayed + 1);
+                //console.log(getters);
+                return state.routes.slice(getters.sliceIndex, (getters.sliceIndex + state.routesDisplayed) + 1);
+                //return state.routes;
             }
         },
         sliceIndex(state){

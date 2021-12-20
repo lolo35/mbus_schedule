@@ -11,7 +11,7 @@
         </div>
         <div class="flex flex-row space-x-2 items-center">
             <div class="flex flex-row space-x-2">
-                <button class="text-blue-500 hover:text-blue-700">
+                <button class="text-blue-500 hover:text-blue-700" @click="$store.dispatch('routes/decPageNumber')">
                     <i class="fas fa-chevron-circle-left"></i>
                 </button>
                 <p class="text-white">

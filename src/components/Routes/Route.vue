@@ -1,17 +1,22 @@
 <template>
-    <div class="flex flex-col bg-white shadow border px-3 py-1 mb-5">
+    <div class="flex flex-col bg-white shadow border px-3 py-2">
         <div class="flex flex-row justify-between">
-            <h5 class="text-md font-semibold">
-                <i class="fas fa-bus text-green-500"></i>
-                {{ routeData.route }}
-            </h5>
-            <button class="text-blue-500" v-if="!favorite" title="Adauga la favorite" @click="addToFavorites()">
-                <i class="far fa-heart"></i>
-            </button>
+            <div class="flex flex-row w-full overflow-x-auto">
+                <h5 class="text-md font-semibold" @click="showStations = !showStations">
+                    <i class="fas fa-bus text-green-500"></i>
+                    {{ routeData.route }}
+                    <i class="fas" :class="{'fa-angle-double-down text-blue-500': !showStations, 'fa-angle-double-up text-green-500': showStations}"></i>
+                </h5>
+            </div>
+            <div v-if="showStations">
+                <button class="text-blue-500" v-if="!favorite" title="Adauga la favorite" @click="addToFavorites()">
+                    <i class="far fa-heart"></i>
+                </button>
 
-            <button class="text-blue-500" v-if="favorite" title="Elimina de la favorite" @click="removeFromFavorites()">
-                <i class="fas fa-heart"></i>
-            </button>
+                <button class="text-blue-500" v-if="favorite" title="Elimina de la favorite" @click="removeFromFavorites()">
+                    <i class="fas fa-heart"></i>
+                </button>
+            </div>
         </div>
         <div v-if="showStations">
             <Station v-for="station in stations" :key="station.id" :station="station" />
@@ -54,7 +59,7 @@ export default {
                 }
                 if(response.data.success){
                     this.stations = response.data.stations;
-                    this.showStations = true;
+                    //this.showStations = true;
                 }
             } catch (error){
                 if(process.env.NODE_ENV === "development"){

@@ -2,9 +2,10 @@
     <div class="flex flex-col px-3">
         <div class="flex-flex-row w-full items-center justify-between">
             <button class="flex flex-row w-full items-center justify-between" @click="showTimes = !showTimes">
-                <div>
+                <div class="flex flex-row flex-wrap">
                     <i class="fas fa-sign text-blue-500"></i>
-                    {{ station.station }} - {{ station.description }}
+                    <p>{{ station.station }} </p>
+                    <!-- - {{ station.description }} -->
                 </div>
                 <div>
                     <i class="fas" :class="{'fa-angle-double-down text-gray-700': !showTimes, 'fa-angle-double-up text-green-500': showTimes}"></i>
