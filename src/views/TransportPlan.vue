@@ -1,6 +1,6 @@
 <template>
     <div>
-        placeholder for transport plan
+        <img src="../assets/under_construction.png" alt="">
     </div>
 </template>
 
@@ -10,6 +10,6 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>

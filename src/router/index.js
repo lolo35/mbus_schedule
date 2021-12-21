@@ -41,6 +41,12 @@ const routes = [
     path: "/contact",
     name: "Contact",
     component: () => import('../views/Contact.vue')
+  },
+  {
+    path: "/station",
+    name: "Station",
+    props: route => ({query: route.query.route_id, route_name: route.query.name, route_path: route.query.route}),
+    component: () => import('../views/Station.vue'),
   }
 ]
 

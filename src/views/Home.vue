@@ -1,12 +1,12 @@
 <template>
-	<div class="flex flex-col space-y-2 px-3">
+	<div class="flex flex-col" v-if="showRoutes">
 		<div class="flex flex-row px-3 py-1">
 			<h5 class="text-lg font-semibold text-gray-700">
 				<i class="fas fa-search text-blue-500"></i>
 				Cautare rute
 			</h5>
 		</div>
-		<div class="flex flex-row w-full px-3">
+		<div class="flex flex-row w-full px-3 mb-2">
 			<input type="text" class="border-b p-2 w-full appearance-none outline-none" v-model="routeSearch">
 		</div>
 		<!-- <div class="flex flex-row">
@@ -16,6 +16,7 @@
 		</div> -->
 		<Route v-for="route in routeResult" :key="route.id" :routeData="route"/>
 	</div>
+	<Loading v-if="!showRoutes" />
 </template>
 
 <script>
@@ -25,16 +26,19 @@ import localforage from 'localforage';
 import Cookies from 'js-cookie';
 import Swal from "sweetalert2";
 import axios from 'axios';
+import Loading from '../components/Loading.vue';
 
 export default {
 	name: 'Home',
 	data() {
 		return {
 			routeSearch: "",
+			showRoutes: false,
 		}
 	},
 	components: {
 		Route,
+		Loading,
 	},
 	created(){
 		this.checkForDivision();
@@ -59,6 +63,7 @@ export default {
 					}
 					if(response.data.success){
 						this.$store.dispatch('routes/setRoutes', response.data.data);
+						this.showRoutes = true;
 					}
 				} catch (error){
 					if(process.env.NODE_ENV === "development"){

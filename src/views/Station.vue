@@ -1,14 +1,13 @@
 <template>
-    <router-link :to="`/station?route_id=${routeData.id}&name=${routeData.route}&route=${$route.path}`" class="flex flex-col bg-white shadow border px-3 py-4">
-        <div class="flex flex-row justify-between">
-            <div class="flex flex-row w-full overflow-x-auto items-center">
-                <h5 class="text-md font-semibold" @click="showStations = !showStations">
-                    <i class="fas fa-bus text-3xl text-green-500"></i>
-                    {{ routeData.route }}
-                    <!-- <i class="fas" :class="{'fa-angle-double-down text-blue-500': !showStations, 'fa-angle-double-up text-green-500': showStations}"></i> -->
-                </h5>
-            </div>
-            <div v-if="showStations">
+    <div class="flex flex-col mb-20">
+        <router-link :to="route_path" class="flex flex-row px-3 py-4 items-center space-x-3">
+            <i class="fas fa-arrow-left"></i>
+            <p>Inapoi</p>
+        </router-link>
+        <div class="flex flex-row items-center justify-center border-b">
+            <h5 class="text-lg font-bold text-gray-700">
+                <i class="fas fa-bus text-green-500"></i>
+                {{ route_name }}
                 <button class="text-blue-500" v-if="!favorite" title="Adauga la favorite" @click="addToFavorites()">
                     <i class="far fa-heart"></i>
                 </button>
@@ -16,24 +15,22 @@
                 <button class="text-blue-500" v-if="favorite" title="Elimina de la favorite" @click="removeFromFavorites()">
                     <i class="fas fa-heart"></i>
                 </button>
-            </div>
+            </h5>
         </div>
-        <!-- <div v-if="showStations">
-            <Station v-for="station in stations" :key="station.id" :station="station" />
-        </div> -->
-    </router-link>
-    <!-- <Loading /> -->
+        <div v-if="showStations">
+            <ind-station v-for="station in stations" :key="station.id" :station="station"></ind-station>
+        </div>
+    </div>
 </template>
 
 <script>
-//import Station from './Station.vue';
 import axios from 'axios';
 import localforage from 'localforage';
-// import Loading from '../Loading.vue';
+import IndStation from '../components/Routes/IndStation.vue';
 
 export default {
-    name: "Route",
-    data() {
+    name: "Station",
+    data(){
         return {
             stations: [],
             showStations: false,
@@ -41,20 +38,21 @@ export default {
         }
     },
     props: {
-        routeData: Object,
+        query: String,
+        route_name: String,
+        route_path: String,
     },
     components: {
-        //Station,
-        // Loading,
+        IndStation,
     },
     created(){
-        //this.fetchStations();
-        //this.checkforFavorite();
+        this.fetchStations();
+        this.checkforFavorite();
     },
     methods: {
         async fetchStations(){
-            let params = `?api_token=${this.$store.state.apiKey}&route_id=${this.routeData.id}`;
-            console.log(params);
+            let params = `?api_token=${this.$store.state.apiKey}&route_id=${this.query}`;
+            //console.log(params);
             try {
                 const response = await axios.get(`${this.$store.state.url}stations${params}`);
                 if(process.env.NODE_ENV === "development"){
@@ -62,7 +60,7 @@ export default {
                 }
                 if(response.data.success){
                     this.stations = response.data.stations;
-                    //this.showStations = true;
+                    this.showStations = true;
                 }
             } catch (error){
                 if(process.env.NODE_ENV === "development"){
@@ -70,9 +68,20 @@ export default {
                 }
             }
         },
+        async checkforFavorite(){
+            let route_id = parseInt(this.query);
+            const favorites = await localforage.getItem('favoriteRoutes');
+            for(let i = 0; i < favorites.length; i++){
+                if(route_id === favorites[i].id){
+                    this.favorite = true;
+                    break;
+                }
+            }
+        },
         async addToFavorites(){
             let favorites = await localforage.getItem('favoriteRoutes');
-            let route = Object.assign({}, this.routeData);
+            let division = await localforage.getItem('division');
+            let route = Object.assign({}, {id: parseInt(this.query), division: division, route: this.route_name});
             favorites.push(route);
             await localforage.setItem('favoriteRoutes', favorites);
             this.favorite = true;
@@ -82,11 +91,12 @@ export default {
         },
         async removeFromFavorites(){
             const favorites = await localforage.getItem('favoriteRoutes');
+            let route_id = parseInt(this.query);
             if(favorites.length > 1){
                 let newFavorites;
                 for(let i = 0; i < favorites.length; i++){
-                    if(this.routeData.id === favorites[i].id){
-                        console.log(favorites[i].id);
+                    if(route_id === favorites[i].id){
+                        //console.log(favorites[i].id);
                         newFavorites = favorites.splice(i, 1);
                         break;
                     }
@@ -97,15 +107,6 @@ export default {
             }
             this.favorite = false;
         },
-        async checkforFavorite(){
-            const favorites = await localforage.getItem('favoriteRoutes');
-            for(let i = 0; i < favorites.length; i++){
-                if(this.routeData.id === favorites[i].id){
-                    this.favorite = true;
-                    break;
-                }
-            }
-        }
     }
 }
 </script>
